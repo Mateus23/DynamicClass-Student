@@ -101,6 +101,9 @@ public class ExercisesAdapter {
     }
 
     public Boolean hasMoreExercises(){
+        if (toDoList.size() < 5){
+            return false;
+        }
         int numberOfToDoEx = toDoList.get(0) + toDoList.get(1) + toDoList.get(2) + toDoList.get(3) + toDoList.get(4);
         return numberOfToDoEx > 0;
     }

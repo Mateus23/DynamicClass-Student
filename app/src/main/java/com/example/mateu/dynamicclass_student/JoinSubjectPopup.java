@@ -47,14 +47,14 @@ public class JoinSubjectPopup extends DialogFragment {
             }
         });
 
-        // Inflate and set the layout for the dialog
-        // Pass null as the parent view because its going in the dialog layout
+
         builder.setView(inflater.inflate(R.layout.popup_join_subject, null))
                 // Add action buttons
                 .setPositiveButton("Entrar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         // sign in the user ...
+                        Log.d("TESTE", "ONCREATE");
                         tryToJoinSubject();
                     }
                 })
@@ -79,6 +79,7 @@ public class JoinSubjectPopup extends DialogFragment {
                 @Override
                 public void onClick(View v)
                 {
+                    Log.d("TESTE", "ONSTART");
                     tryToJoinSubject();
                 }
             });

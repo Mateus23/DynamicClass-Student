@@ -39,7 +39,7 @@ public class DoExerciseActivity extends AppCompatActivity {
     ImageView exerciseImage;
     TextInputLayout textInputBox;
     ExerciseInfo myExercise;
-    View radioGroup;
+    RadioGroup radioGroup;
     List<String> copyOfAnswer = new ArrayList<>();
     int exerciseType;
     String radioAnswer = "";
@@ -114,6 +114,8 @@ public class DoExerciseActivity extends AppCompatActivity {
 
     public void createExercise(){
         myExercise = ChapterActivity.myExerciseAdapter.getNextExercise();
+        answerText.setText(null);
+        copyOfAnswer.clear();
         if (myExercise == null){
             DoExerciseActivity.this.finish();
         }
@@ -128,6 +130,7 @@ public class DoExerciseActivity extends AppCompatActivity {
             textInputBox.setVisibility(View.VISIBLE);
             exerciseType = myExercise.getAnswer().size();
         }else{
+            radioGroup.clearCheck();
             radioGroup.setVisibility(View.VISIBLE);
             textInputBox.setVisibility(View.INVISIBLE);
             exerciseType = 3;
