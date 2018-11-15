@@ -23,6 +23,7 @@ public class MySubjects extends AppCompatActivity {
     String Database_Path = "Students";
     static String id;
     static DataSnapshot mySubjectsSnapshot;
+    static String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +72,7 @@ public class MySubjects extends AppCompatActivity {
                         b.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
 
                         final String code = postSnapshot.child("code").getValue().toString();
-                        String name = postSnapshot.child("name").getValue().toString();
+                        name = postSnapshot.child("name").getValue().toString();
 
                         String buttonText = code + " - " + name;
                         b.setText(buttonText);
@@ -126,6 +127,7 @@ public class MySubjects extends AppCompatActivity {
             newStudentSubjectReference.child("name").setValue(subjecName);
             newStudentSubjectReference.child("code").setValue(subjectCode);
             newClassReference.child("Students").child(id).child("isActive").setValue(true);
+            newClassReference.child("Students").child(id).child("name").setValue(name);
         }
     }
 
