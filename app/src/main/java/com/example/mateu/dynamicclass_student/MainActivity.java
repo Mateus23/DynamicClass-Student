@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,6 +23,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
     public static String myUID;
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
+    TextView welcomeTextView;
+
+    DatabaseReference databaseReference;
 
     View LoginView;
     View HomeView;
@@ -45,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         mPasswordView = (EditText) findViewById(R.id.password);
+        welcomeTextView = findViewById(R.id.welcomeText);
 
         Button mLoginButton = (Button) findViewById(R.id.email_sign_in_button);
         mLoginButton.setOnClickListener(new View.OnClickListener() {
@@ -92,8 +102,23 @@ public class MainActivity extends AppCompatActivity {
             HomeView.setVisibility(View.VISIBLE);
             LoginView.setVisibility((View.INVISIBLE));
             myUID = currentUser.getUid();
-            Log.d("OLHA O ID BRASIL1", myUID);
+            loadInfo(myUID);
         }
+    }
+
+    private void loadInfo(String UID){
+        databaseReference = FirebaseDatabase.getInstance().getReference("Students/" + UID);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                welcomeTextView.setText("Bem-vindo " + dataSnapshot.child("name").getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void attemptLogin() {
@@ -107,27 +132,23 @@ public class MainActivity extends AppCompatActivity {
         String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
-        View focusView = null;
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
             cancel = true;
         }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
             mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
             cancel = true;
         } else if (!isEmailValid(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
             cancel = true;
         }
 
-        if (cancel == false){
+        if (!cancel){
             requestLogin(email, password);
         }
 
@@ -143,13 +164,12 @@ public class MainActivity extends AppCompatActivity {
                             currentUser = mAuth.getCurrentUser();
                             HomeView.setVisibility(View.VISIBLE);
                             LoginView.setVisibility((View.INVISIBLE));
+                            myUID = currentUser.getUid();
+                            loadInfo(myUID);
                         } else {
-                            // If sign in fails, display a message to the user.
                             Toast.makeText(MainActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
-
-                        // ...
                     }
                 });
     }
@@ -160,10 +180,6 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean isPasswordValid(String password) {
         return password.length() > 4;
-    }
-
-    public static void tryToJoinSubject(String subjectCode, String subjectPassword){
-
     }
 
     public void toSignUpActivity() {

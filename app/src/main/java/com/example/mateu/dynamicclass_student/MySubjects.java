@@ -33,7 +33,6 @@ public class MySubjects extends AppCompatActivity {
         Bundle b = getIntent().getExtras();
         id = b.getString("id");
         Database_Path = Database_Path + "/" + id + "/Classes";
-        Log.d("DATAPATH", Database_Path);
         databaseReference = FirebaseDatabase.getInstance().getReference(Database_Path);
 
         Button mBackButton = (Button) findViewById(R.id.backButton);
@@ -56,17 +55,13 @@ public class MySubjects extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
         if (mScrollView.getChildCount() == 0) {
-            Log.d("OLHA AQUI", "ENTROU NO SCROLLVIEWCOUNT CHANGE");
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     int count = 1;
                     mySubjectsSnapshot = dataSnapshot;
-                    Log.d("OLHA AQUI", "ENTROU NO DATA CHANGE");
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                        Log.d("OLHA AQUI", "ENTROU NO FOR DATA CHANGE");
                         Button b = new Button(MySubjects.this);
                         b.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
                         b.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -85,13 +80,12 @@ public class MySubjects extends AppCompatActivity {
                                 toSubjectActivity(code);
                             }
                         });
-
                         mScrollView.addView(b);
-                        if(mScrollView.getChildCount() == 0){
-                            findViewById(R.id.textNoSubjects).setVisibility(View.VISIBLE);
-                        }else{
-                            findViewById(R.id.textNoSubjects).setVisibility(View.INVISIBLE);
-                        }
+                    }
+                    if(mScrollView.getChildCount() == 0){
+                        findViewById(R.id.textNoSubjects).setVisibility(View.VISIBLE);
+                    }else{
+                        findViewById(R.id.textNoSubjects).setVisibility(View.INVISIBLE);
                     }
                 }
 
@@ -100,13 +94,6 @@ public class MySubjects extends AppCompatActivity {
 
                 }
             });
-            if(mScrollView.getChildCount() == 0){
-                findViewById(R.id.textNoSubjects).setVisibility(View.VISIBLE);
-            }else{
-                findViewById(R.id.textNoSubjects).setVisibility(View.INVISIBLE);
-            }
-        }else{
-            Log.d("OLHA AQUI", "NAO ENTROU NO SCROLLVIEWCOUNT CHANGE");
         }
     }
 
