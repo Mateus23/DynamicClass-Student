@@ -88,7 +88,9 @@ public class ChapterActivity extends AppCompatActivity {
                 }
                 List<Integer> exercisesToDoList = new ArrayList<>();
                 for (int i = 0; i < 5; i++) {
-                    exercisesToDoList.add(Integer.valueOf(dataSnapshot.child("ToDoExercises").child(String.valueOf(i)).getValue().toString()));
+                    if (dataSnapshot.child("ToDoExercises").child(String.valueOf(i)).exists()) {
+                        exercisesToDoList.add(Integer.valueOf(dataSnapshot.child("ToDoExercises").child(String.valueOf(i)).getValue().toString()));
+                    }
                 }
                 myExerciseAdapter = new ExercisesAdapter(subjectCode, chapterIndex, doingList, exercisesToDoList);
             }

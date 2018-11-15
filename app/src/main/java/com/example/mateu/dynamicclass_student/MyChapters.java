@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,6 +33,9 @@ public class MyChapters extends AppCompatActivity {
         subjectCode = b.getString("subjectCode");
         Database_Path = Database_Path + subjectCode + "/Chapters";
         databaseReference = FirebaseDatabase.getInstance().getReference(Database_Path);
+
+        TextView titleTextView = findViewById(R.id.subjectTextView);
+        titleTextView.setText(subjectCode);
 
         Button mBackButton = (Button) findViewById(R.id.backButton);
         mBackButton.setOnClickListener(new View.OnClickListener() {
