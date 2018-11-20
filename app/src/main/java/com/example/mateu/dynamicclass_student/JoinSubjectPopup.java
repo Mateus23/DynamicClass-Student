@@ -123,7 +123,7 @@ public class JoinSubjectPopup extends DialogFragment {
 
         if (!cancel) {
             DatabaseReference newClassReference = classesReference.child(code);
-            MySubjects.joinSubject(code, classesSnapshot.child(code).child("name").getValue().toString(), newClassReference);
+            MySubjects.joinSubject(code, classesSnapshot.child(code).child("name").getValue().toString(), classesSnapshot.child(code).child("Students").getChildrenCount(), newClassReference);
 
         }
     }
