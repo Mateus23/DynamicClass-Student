@@ -82,6 +82,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button myProfileButton = (Button) findViewById(R.id.profileButton);
+        myProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toProfileActivity();
+            }
+        });
+
         Button mMySubjectsButton = (Button) findViewById(R.id.mySubjectsButton);
         mMySubjectsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,6 +198,13 @@ public class MainActivity extends AppCompatActivity {
     public void toMySubjectsActivity() {
         Intent intent = new Intent(this, MySubjects.class);
         intent.putExtra("id", currentUser.getUid());
+        startActivity(intent);
+    }
+
+    public void toProfileActivity(){
+        Intent intent = new Intent(this, ProfileActivity.class);
+        intent.putExtra("userUID", currentUser.getUid());
+        intent.putExtra("typeOfUser", "Students");
         startActivity(intent);
     }
 

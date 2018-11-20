@@ -21,6 +21,7 @@ public class SubjectActivity extends AppCompatActivity {
     TextView subjectName;
     TextView subjectDescription;
     DataSnapshot subjectSnapshot;
+    String teacherUID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +59,6 @@ public class SubjectActivity extends AppCompatActivity {
             }
         });
 
-        Button mButtonMyPerformance = (Button) findViewById(R.id.buttonMyPerformance);
-        mButtonMyPerformance.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                buttonMyPerformanceEvent();
-            }
-        });
-
         Button mButtonLeave = (Button) findViewById(R.id.buttonLeave);
         mButtonLeave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +80,7 @@ public class SubjectActivity extends AppCompatActivity {
                 String name = subjectSnapshot.child("name").getValue().toString();
                 String code = subjectSnapshot.child("code").getValue().toString();
                 String subjectTitle = code + " - " + name;
+                teacherUID = subjectSnapshot.child("teacher").getValue().toString();
 
                 Object descriptionObject = subjectSnapshot.child("description").getValue();
                 String subjectDescriptionText;
@@ -116,7 +110,10 @@ public class SubjectActivity extends AppCompatActivity {
     }
 
     public void buttonTeacherEvent(){
-        //TODO
+        Intent intent = new Intent(this, ProfileActivity.class);
+        intent.putExtra("userUID", teacherUID);
+        intent.putExtra("typeOfUser", "Teachers");
+        startActivity(intent);
     }
 
     public void buttonChaptersEvent(String subjectCode){
