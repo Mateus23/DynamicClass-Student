@@ -108,13 +108,14 @@ public class MySubjects extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public static void joinSubject(String subjectCode, String subjecName, DatabaseReference newClassReference){
+    public static void joinSubject(String subjectCode, String subjecName, long numberOfStudents, DatabaseReference newClassReference){
         if (!mySubjectsSnapshot.hasChild(subjectCode)){
             DatabaseReference newStudentSubjectReference = FirebaseDatabase.getInstance().getReference("Students" + "/" + id + "/Classes/" + subjectCode);
             newStudentSubjectReference.child("name").setValue(subjecName);
             newStudentSubjectReference.child("code").setValue(subjectCode);
             newClassReference.child("Students").child(id).child("isActive").setValue(true);
             newClassReference.child("Students").child(id).child("name").setValue(name);
+            newClassReference.child("Students").child(id).child("index").setValue(String.valueOf(numberOfStudents));
         }
     }
 
