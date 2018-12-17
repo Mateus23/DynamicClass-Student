@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     TextView welcomeTextView;
+    String studentName;
 
     DatabaseReference databaseReference;
 
@@ -119,7 +120,8 @@ public class MainActivity extends AppCompatActivity {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                welcomeTextView.setText("Bem-vindo " + dataSnapshot.child("name").getValue().toString());
+                studentName = dataSnapshot.child("name").getValue().toString();
+                welcomeTextView.setText("Bem-vindo " + studentName);
             }
 
             @Override
@@ -198,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
     public void toMySubjectsActivity() {
         Intent intent = new Intent(this, MySubjects.class);
         intent.putExtra("id", currentUser.getUid());
+        intent.putExtra("studentName", studentName);
         startActivity(intent);
     }
 
