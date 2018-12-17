@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,6 +25,7 @@ public class MySubjects extends AppCompatActivity {
     static String id;
     static DataSnapshot mySubjectsSnapshot;
     static String name;
+    static String studentName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class MySubjects extends AppCompatActivity {
         mScrollView = findViewById(R.id.scrollViewLayout);
         Bundle b = getIntent().getExtras();
         id = b.getString("id");
+        studentName = b.getString("studentName");
         Database_Path = Database_Path + "/" + id + "/Classes";
         databaseReference = FirebaseDatabase.getInstance().getReference(Database_Path);
 
@@ -68,6 +71,7 @@ public class MySubjects extends AppCompatActivity {
 
                         final String code = postSnapshot.child("code").getValue().toString();
                         name = postSnapshot.child("name").getValue().toString();
+                        Log.d("TESTE DE NOME", name);
 
                         String buttonText = code + " - " + name;
                         b.setText(buttonText);
@@ -110,12 +114,13 @@ public class MySubjects extends AppCompatActivity {
 
     public static void joinSubject(String subjectCode, String subjecName, long numberOfStudents, DatabaseReference newClassReference){
         if (!mySubjectsSnapshot.hasChild(subjectCode)){
+            long stIndex = numberOfStudents + 1;
             DatabaseReference newStudentSubjectReference = FirebaseDatabase.getInstance().getReference("Students" + "/" + id + "/Classes/" + subjectCode);
             newStudentSubjectReference.child("name").setValue(subjecName);
             newStudentSubjectReference.child("code").setValue(subjectCode);
             newClassReference.child("Students").child(id).child("isActive").setValue(true);
-            newClassReference.child("Students").child(id).child("name").setValue(name);
-            newClassReference.child("Students").child(id).child("index").setValue(String.valueOf(numberOfStudents));
+            newClassReference.child("Students").child(id).child("name").setValue(studentName);
+            newClassReference.child("Students").child(id).child("index").setValue(String.valueOf(stIndex));
         }
     }
 
