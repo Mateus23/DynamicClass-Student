@@ -71,14 +71,6 @@ public class ChapterActivity extends AppCompatActivity {
             }
         });
 
-        Button mButtonMyPerformance = (Button) findViewById(R.id.buttonMyPerformance);
-        mButtonMyPerformance.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                buttonStudentsEvent();
-            }
-        });
-
         studentDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
